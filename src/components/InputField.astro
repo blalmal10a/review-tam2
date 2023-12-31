@@ -1,0 +1,60 @@
+<div>
+	<div class="mt-7" style="">
+		<!-- <label
+            for="large-input"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Large input</label
+        > -->
+		<input
+			onfocus="(ev)=>ev.target.select()"
+			placeholder="Enter URL from amazon"
+			type="text"
+			id="url-input"
+			class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+		/>
+	</div>
+</div>
+<script>
+	let urlInput = document.getElementById("url-input")
+	let outputDiv = document.getElementById("output")
+	let linkButton = document.getElementById("link-button")
+	let errorBanner = document.getElementById("error-banner")
+	if (urlInput) {
+		urlInput.addEventListener("input", onInput)
+		function onInput(ev) {
+			const val = ev.target.value
+			const validUrl = isValidURL(val)
+			if (!outputDiv) outputDiv = document.getElementById("output")
+			if (!errorBanner) outputDiv = document.getElementById("error-banner")
+			if (validUrl) {
+				const url = updateUrl(val)
+				linkButton.setAttribute("href", url)
+				outputDiv.classList.remove("hidden")
+				errorBanner.classList.add("hidden")
+			} else {
+				outputDiv.classList.add("hidden")
+				errorBanner.classList.remove("hidden")
+			}
+		}
+	}
+	function isValidURL(str) {
+		if (
+			/^(http(s):\/\/)(www\.)?amazon\.(com|co\.uk|de|fr|it|co\.jp|es|ca|in)\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(
+				str,
+			)
+		) {
+			console.log("YES")
+			return true
+		} else {
+			console.log("NO")
+			return false
+		}
+	}
+	function updateUrl(url) {
+		if (hasQueryParams(url)) return `${url}&s=review-count-rank`
+		else return `${url}&s=review-count-rank`
+	}
+	function hasQueryParams(url) {
+		return url.includes("?")
+	}
+</script>
